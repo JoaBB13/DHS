@@ -1,0 +1,8 @@
+956
+Hola
+tx_2v    5
+**fd
+for
+while
+if
+do
