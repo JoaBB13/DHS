@@ -27,10 +27,11 @@ PUNTO: '.' ;
 GUION_BAJO: '_' ;
 ARROBA: '@' ;
 NUMERAL: '#' ;
+COMA: ',';
 
 logicos: AND | OR ;
 comparadores: MAYOR | MENOR | MAYORIG | MENORIG | IGUAL | DIF ;
-NUMERO : DIGITO+ ;
+NUMERO : DIGITO+ | DIGITO+ '.' DIGITO+ ;
 
 AND : '&&' ;
 OR : '||' ;
@@ -40,6 +41,8 @@ WHILE : 'while' ;
 FOR : 'for' ;
 IF: 'if' ;
 DO: 'do' ;
+ELSE: 'else' ;
+RETURN: 'return' ;
 ID : (LETRA | '_')(LETRA | DIGITO | '_')* ;
 
 WS : [ \n\t\r] -> skip;
@@ -86,12 +89,16 @@ opal : log ; //completar
 //trabajo en proceso
 log : comp lor;
 
-lor : OR land lor
+lor : land lorp ;
+
+lorp : OR land lor
   | land
   |
   ;
 
-land : comp AND comp land
+land: comp landp;
+
+landp : AND comp land
     | 
     ;
 
@@ -128,6 +135,6 @@ init : ID ASIG opal;
 cond : ID comparadores (NUMERO | ID);
 iter : opal | ID SUMA SUMA | ID RESTA RESTA | SUMA SUMA ID | RESTA RESTA ID;
 
-iif : IF PA ID comparadores (ID | NUMERO) PC  LLA instruccion LLC;
+iif : IF PA ID comparadores (ID | NUMERO) PC  LLA instruccion LLC ielse?;
 
-
+ielse: ELSE bloque | ELSE iif ;
